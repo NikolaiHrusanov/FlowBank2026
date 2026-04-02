@@ -44,6 +44,126 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Additional CSS for updated Kids & Teens dropdown -->
+    <style>
+        /* Updated Kids & Teens Menu Styles */
+        .kids-menu {
+            min-width: 500px;
+            left: -100px;
+        }
+        
+        .kids-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+        
+        .kids-card {
+            background: rgba(129, 140, 248, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            cursor: default;
+        }
+        
+        .kids-card:hover {
+            background: rgba(129, 140, 248, 0.12);
+            border-color: rgba(129, 140, 248, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .kids-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px auto;
+        }
+        
+        .kids-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .kids-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .kids-desc {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            line-height: 1.3;
+        }
+        
+        /* Ensure dropdown grid consistency */
+        .dropdown-grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+        
+        /* Make section headers non-clickable */
+        .dropdown-section-header {
+            cursor: default;
+            pointer-events: none;
+        }
+        
+        /* Drag and Drop Styles */
+        .dropdown-link[draggable="true"], 
+        .plan-link[draggable="true"],
+        .kids-card[draggable="true"] {
+            cursor: grab;
+        }
+        
+        .dropdown-link[draggable="true"]:active,
+        .plan-link[draggable="true"]:active,
+        .kids-card[draggable="true"]:active {
+            cursor: grabbing;
+        }
+        
+        .drag-over {
+            background: rgba(129, 140, 248, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .button-updated {
+            animation: pulse 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background: var(--primary); color: white; }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 1024px) {
+            .kids-menu {
+                min-width: 90vw !important;
+                left: 0 !important;
+                right: 0 !important;
+                transform: translateX(0) translateY(10px) !important;
+            }
+            .kids-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .kids-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
 </head>
 <body class="dark-theme">
 
@@ -58,7 +178,7 @@
             </a>
 
             <div class="nav-row">
-                <!-- Personal Dropdown - Mega Menu -->
+                <!-- Personal Dropdown - Mega Menu (RESTRUCTURED: Accounts as header, Bank Account with functionality) -->
                 <div class="nav-dropdown">
                     <a href="#" class="nav-item dropdown-toggle">
                         <i class="fas fa-user"></i>
@@ -68,54 +188,55 @@
                     <div class="dropdown-menu personal-menu">
                         <div class="dropdown-grid">
                             <!-- Column 1 - Discover -->
-                           <!-- In the Personal dropdown menu, around line 60-70 -->
-<div class="dropdown-col">
-    <div class="dropdown-section-header">
-        <span>Discover NexusBank</span>
-    </div>
-    <a href="personal/Discover NexusBank/Accounts/index.html" class="dropdown-link">
-        <span>Accounts</span>
-    </a>
-    <a href="personal/Discover NexusBank/Bank Account/index.html" class="dropdown-link">
-        <span>Bank Account</span>
-    </a>
-    <a href="personal/Discover NexusBank/Joint Account/index.html" class="dropdown-link">
-        <span>Joint Account</span>
-    </a>
-    <a href="personal/Discover NexusBank/Professional Account/index.html" class="dropdown-link">
-        <span>Professional Account</span>
-    </a>
-    <a href="personal/Discover NexusBank/Parents and guardians/index.html" class="dropdown-link">
-        <span>Parents and guardians</span>
-    </a>
-</div>
+                            <div class="dropdown-col">
+                                <div class="dropdown-section-header">
+                                    <span>Discover NexusBank</span>
+                                </div>
+                                <!-- Accounts is now a SECTION HEADER - NOT clickable, NOT draggable -->
+                                <div class="dropdown-section-header mt-2">
+                                    <span>Accounts</span>
+                                </div>
+                                <!-- Bank Account is the main functional button/link with ALL functionality -->
+                                <a href="personal/Discover-NexusBank/Bank-Account/index.html" class="dropdown-link" draggable="true">
+                                    <span>Bank Account</span>
+                                </a>
+                                <a href="personal/Discover-NexusBank/Joint-Account/index.html" class="dropdown-link" draggable="true">
+                                    <span>Joint Account</span>
+                                </a>
+                                <a href="personal/Discover-NexusBank/Professional-Account/index.html" class="dropdown-link" draggable="true">
+                                    <span>Professional Account</span>
+                                </a>
+                                <a href="personal/Discover-NexusBank/Parents-and-guardians/index.html" class="dropdown-link" draggable="true">
+                                    <span>Parents and guardians</span>
+                                </a>
+                            </div>
 
                             <!-- Column 2 - Savings & Funds -->
                             <div class="dropdown-col">
                                 <div class="dropdown-section-header">
                                     <span>Savings & Funds</span>
                                 </div>
-                                <a href="personal/flexible-cash-funds.html" class="dropdown-link">
+                                <a href="personal/Savings-&-Funds/Flexible-Cash-Funds/index.html" class="dropdown-link" draggable="true">
                                     <span>Flexible Cash Funds</span>
                                 </a>
-                                <a href="personal/smart-spending.html" class="dropdown-link">
+                                <a href="personal/Savings-&-Funds/Smart-Spending/index.html" class="dropdown-link" draggable="true">
                                     <span>Smart Spending</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Cards</span>
                                 </div>
-                                <a href="personal/send-receive.html" class="dropdown-link">
+                                <a href="personal/Cards/Send-&-Receive/index.html" class="dropdown-link" draggable="true">
                                     <span>Send & Receive</span>
                                 </a>
-                                <a href="personal/nexus-pay.html" class="dropdown-link">
+                                <a href="personal/Cards/NexusBank-Pay/index.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank Pay</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Money Management</span>
                                 </div>
-                                <a href="personal/nexus-points.html" class="dropdown-link">
+                                <a href="personal/Money-Management/NexusPoints/index.html" class="dropdown-link" draggable="true">
                                     <span>NexusPoints</span>
                                 </a>
                             </div>
@@ -125,16 +246,16 @@
                                 <div class="dropdown-section-header">
                                     <span>Security & Protection</span>
                                 </div>
-                                <a href="security/how-we-protect.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/How-We-Protect-Your-Money/index.html" class="dropdown-link" draggable="true">
                                     <span>How We Protect Your Money</span>
                                 </a>
-                                <a href="security/report-lost-device.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/Report-Lost-Device/index.html" class="dropdown-link" draggable="true">
                                     <span>Report Lost Device</span>
                                 </a>
-                                <a href="security/fraud-scams.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/Learn-About-Fraud-&-Scams/index.html" class="dropdown-link" draggable="true">
                                     <span>Learn About Fraud & Scams</span>
                                 </a>
-                                <a href="security/insight-report.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/Consumer-Security-Insight-Report/index.html" class="dropdown-link" draggable="true">
                                     <span>Consumer Security Insight Report</span>
                                 </a>
                             </div>
@@ -144,29 +265,29 @@
                                 <div class="dropdown-section-header">
                                     <span>Investments</span>
                                 </div>
-                                <a href="investments/stocks.html" class="dropdown-link">
+                                <a href="investments/Stocks/index.html" class="dropdown-link" draggable="true">
                                     <span>Stocks</span>
                                 </a>
-                                <a href="investments/robo-advisor.html" class="dropdown-link">
+                                <a href="investments/Robo-Advisor/index.html" class="dropdown-link" draggable="true">
                                     <span>Robo-Advisor</span>
                                 </a>
-                                <a href="investments/etfs.html" class="dropdown-link">
+                                <a href="investments/ETFs/index.html" class="dropdown-link" draggable="true">
                                     <span>ETFs</span>
                                 </a>
-                                <a href="investments/bonds.html" class="dropdown-link">
+                                <a href="investments/Bonds/index.html" class="dropdown-link" draggable="true">
                                     <span>Bonds</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Crypto</span>
                                 </div>
-                                <a href="crypto/crypto.html" class="dropdown-link">
+                                <a href="crypto/Crypto/index.html" class="dropdown-link" draggable="true">
                                     <span>Crypto</span>
                                 </a>
-                                <a href="crypto/ramp.html" class="dropdown-link">
+                                <a href="crypto/NexusBank-Ramp/index.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank Ramp</span>
                                 </a>
-                                <a href="crypto/exchange.html" class="dropdown-link">
+                                <a href="crypto/NexusBank-X/index.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank X</span>
                                 </a>
                             </div>
@@ -176,52 +297,41 @@
                                 <div class="dropdown-section-header">
                                     <span>Mobile & Connectivity</span>
                                 </div>
-                                <a href="mobile/data-plans.html" class="dropdown-link">
+                                <a href="mobile/Mobile-&-Connectivity/Data-Plans/index.html" class="dropdown-link" draggable="true">
                                     <span>Data Plans</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Global Finances</span>
                                 </div>
-                                <a href="global/international-transfers.html" class="dropdown-link">
+                                <a href="global/Global-Finances/International-Transfers/index.html" class="dropdown-link" draggable="true">
                                     <span>International Transfers</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Help</span>
                                 </div>
-                                <a href="help/contact.html" class="dropdown-link">
+                                <a href="help/Contact-Us/index.html" class="dropdown-link" draggable="true">
                                     <span>Contact Us</span>
                                 </a>
-                                <a href="help/centre.html" class="dropdown-link">
+                                <a href="help/Help-Centre/index.html" class="dropdown-link" draggable="true">
                                     <span>Help Centre</span>
                                 </a>
-                                <a href="help/system-status.html" class="dropdown-link">
+                                <a href="help/System-Status/index.html" class="dropdown-link" draggable="true">
                                     <span>System Status</span>
                                 </a>
                             </div>
 
-                           <!-- Column 6 - Plans -->
+                            <!-- Column 6 - Plans (UPDATED: Only Standard) -->
                             <div class="dropdown-col plans-col">
                                 <div class="dropdown-section-header">
-                               <span>Plans</span>
-                                 </div>
-                               <a href="../../../plans/standard.html" class="plan-link">
-                                  <span class="plan-name">Standard</span>
-                                 <span class="plan-price">Free</span>
-                                    </a>
-                                <a href="../../../plans/flexy.html" class="plan-link">
-                                 <span class="plan-name">Flexy</span>
-                                <span class="plan-price">Free</span>
-                               </a>
-                               <a href="../../../plans/blaze-wear.html" class="plan-link">
-                               <span class="plan-name">Blaze Wear</span>
-                               <span class="plan-price">Free</span>
-                               </a>
-                               <a href="../../../plans/compare.html" class="compare-link">
-                                <span>Compare Plans</span>
-                                    </a>
-                               </div>
+                                    <span>Plans</span>
+                                </div>
+                                <a href="../../../plans/standard.html" class="plan-link" draggable="true">
+                                    <span class="plan-name">Standard</span>
+                                    <span class="plan-price">Free</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -244,19 +354,19 @@
                                 <div class="dropdown-section-header mt-2">
                                     <span>Daily Banking</span>
                                 </div>
-                                <a href="business/multi-currency-account.html" class="dropdown-link">
+                                <a href="business/multi-currency-account.html" class="dropdown-link" draggable="true">
                                     <span>Multi-Currency Account</span>
                                 </a>
-                                <a href="business/expense-management.html" class="dropdown-link">
+                                <a href="business/expense-management.html" class="dropdown-link" draggable="true">
                                     <span>Expense Management</span>
                                 </a>
-                                <a href="business/corporate-cards.html" class="dropdown-link">
+                                <a href="business/corporate-cards.html" class="dropdown-link" draggable="true">
                                     <span>Corporate Cards</span>
                                 </a>
-                                <a href="business/money-transfers.html" class="dropdown-link">
+                                <a href="business/money-transfers.html" class="dropdown-link" draggable="true">
                                     <span>Money Transfers</span>
                                 </a>
-                                <a href="business/bills.html" class="dropdown-link">
+                                <a href="business/bills.html" class="dropdown-link" draggable="true">
                                     <span>Bills</span>
                                 </a>
                             </div>
@@ -266,22 +376,22 @@
                                 <div class="dropdown-section-header">
                                     <span>Treasury</span>
                                 </div>
-                                <a href="business/currency-exchange.html" class="dropdown-link">
+                                <a href="business/currency-exchange.html" class="dropdown-link" draggable="true">
                                     <span>Currency Exchange</span>
                                 </a>
-                                <a href="business/savings.html" class="dropdown-link">
+                                <a href="business/savings.html" class="dropdown-link" draggable="true">
                                     <span>Savings</span>
                                 </a>
-                                <a href="business/flexible-cash-funds.html" class="dropdown-link">
+                                <a href="business/flexible-cash-funds.html" class="dropdown-link" draggable="true">
                                     <span>Flexible Cash Funds</span>
                                 </a>
-                                <a href="business/crypto.html" class="dropdown-link">
+                                <a href="business/crypto.html" class="dropdown-link" draggable="true">
                                     <span>Crypto</span>
                                 </a>
-                                <a href="business/fx-forwards.html" class="dropdown-link">
+                                <a href="business/fx-forwards.html" class="dropdown-link" draggable="true">
                                     <span>FX Forwards</span>
                                 </a>
-                                <a href="business/nexus-x.html" class="dropdown-link">
+                                <a href="business/nexus-x.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank X</span>
                                 </a>
                             </div>
@@ -291,29 +401,29 @@
                                 <div class="dropdown-section-header">
                                     <span>Accept payments</span>
                                 </div>
-                                <a href="business/accept-payments.html" class="dropdown-link">
+                                <a href="business/accept-payments.html" class="dropdown-link" draggable="true">
                                     <span>Accept Payments</span>
                                 </a>
-                                <a href="business/in-person-payments.html" class="dropdown-link">
+                                <a href="business/in-person-payments.html" class="dropdown-link" draggable="true">
                                     <span>In-person Payments</span>
                                 </a>
-                                <a href="business/online-payments.html" class="dropdown-link">
+                                <a href="business/online-payments.html" class="dropdown-link" draggable="true">
                                     <span>Online Payments</span>
                                 </a>
-                                <a href="business/nexus-pay.html" class="dropdown-link">
+                                <a href="business/nexus-pay.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank Pay</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Platform</span>
                                 </div>
-                                <a href="business/analytics.html" class="dropdown-link">
+                                <a href="business/analytics.html" class="dropdown-link" draggable="true">
                                     <span>Analytics</span>
                                 </a>
-                                <a href="business/apis.html" class="dropdown-link">
+                                <a href="business/apis.html" class="dropdown-link" draggable="true">
                                     <span>Business APIs</span>
                                 </a>
-                                <a href="business/integrations.html" class="dropdown-link">
+                                <a href="business/integrations.html" class="dropdown-link" draggable="true">
                                     <span>Integrations</span>
                                 </a>
                             </div>
@@ -323,36 +433,36 @@
                                 <div class="dropdown-section-header">
                                     <span>Rewards</span>
                                 </div>
-                                <a href="business/nexus-people.html" class="dropdown-link">
+                                <a href="business/nexus-people.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank People</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Platform</span>
                                 </div>
-                                <a href="business/performance.html" class="dropdown-link">
+                                <a href="business/performance.html" class="dropdown-link" draggable="true">
                                     <span>Performance</span>
                                 </a>
-                                <a href="business/recruitment.html" class="dropdown-link">
+                                <a href="business/recruitment.html" class="dropdown-link" draggable="true">
                                     <span>Recruitment</span>
                                 </a>
-                                <a href="business/hr.html" class="dropdown-link">
+                                <a href="business/hr.html" class="dropdown-link" draggable="true">
                                     <span>HR</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Solutions</span>
                                 </div>
-                                <a href="solutions/travel.html" class="dropdown-link">
+                                <a href="solutions/travel.html" class="dropdown-link" draggable="true">
                                     <span>Travel</span>
                                 </a>
-                                <a href="solutions/ecommerce.html" class="dropdown-link">
+                                <a href="solutions/ecommerce.html" class="dropdown-link" draggable="true">
                                     <span>Ecommerce</span>
                                 </a>
-                                <a href="solutions/marketing.html" class="dropdown-link">
+                                <a href="solutions/marketing.html" class="dropdown-link" draggable="true">
                                     <span>Marketing agencies</span>
                                 </a>
-                                <a href="solutions/technology.html" class="dropdown-link">
+                                <a href="solutions/technology.html" class="dropdown-link" draggable="true">
                                     <span>Technology & AI</span>
                                 </a>
                             </div>
@@ -362,29 +472,29 @@
                                 <div class="dropdown-section-header">
                                     <span>Help & Resources</span>
                                 </div>
-                                <a href="business/help.html" class="dropdown-link">
+                                <a href="business/help.html" class="dropdown-link" draggable="true">
                                     <span>Customer Help</span>
                                 </a>
-                                <a href="business/customer-stories.html" class="dropdown-link">
+                                <a href="business/customer-stories.html" class="dropdown-link" draggable="true">
                                     <span>Customer Stories</span>
                                 </a>
-                                <a href="business/resources.html" class="dropdown-link">
+                                <a href="business/resources.html" class="dropdown-link" draggable="true">
                                     <span>Business Resources</span>
                                 </a>
-                                <a href="security/how-we-protect.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/How-We-Protect-Your-Money/index.html" class="dropdown-link" draggable="true">
                                     <span>How we protect your money</span>
                                 </a>
-                                <a href="help/system-status.html" class="dropdown-link">
+                                <a href="help/System-Status/index.html" class="dropdown-link" draggable="true">
                                     <span>System Status</span>
                                 </a>
-                                <a href="security/fraud-scams.html" class="dropdown-link">
+                                <a href="security/Security-&-Protection/Learn-About-Fraud-&-Scams/index.html" class="dropdown-link" draggable="true">
                                     <span>Learn About Fraud & Scams</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>What's New</span>
                                 </div>
-                                <a href="whats-new/index.html" class="dropdown-link">
+                                <a href="whats-new/index.html" class="dropdown-link" draggable="true">
                                     <span>What's New</span>
                                 </a>
                             </div>
@@ -394,10 +504,10 @@
                                 <div class="dropdown-section-header">
                                     <span>Plans</span>
                                 </div>
-                                <a href="business/pricing.html" class="plan-link">
+                                <a href="business/pricing.html" class="plan-link" draggable="true">
                                     <span class="plan-name">Business Account Pricing</span>
                                 </a>
-                                <a href="business/payment-pricing.html" class="plan-link">
+                                <a href="business/payment-pricing.html" class="plan-link" draggable="true">
                                     <span class="plan-name">Payment Acceptance Pricing</span>
                                 </a>
                             </div>
@@ -405,7 +515,7 @@
                     </div>
                 </div>
 
-                <!-- Kids & Teens Dropdown -->
+                <!-- Kids & Teens Dropdown - UPDATED with Card Design -->
                 <div class="nav-dropdown">
                     <a href="#" class="nav-item dropdown-toggle">
                         <i class="fas fa-child"></i>
@@ -413,31 +523,30 @@
                         <i class="fas fa-chevron-down dropdown-arrow"></i>
                     </a>
                     <div class="dropdown-menu kids-menu">
-                        <div class="dropdown-grid single-row">
-                            <div class="dropdown-col">
-                                <a href="kids-teens/account.html" class="feature-link">
-                                    <div>
-                                        <div class="feature-title">Kids & Teens account</div>
-                                        <div class="feature-desc">For ages 6-17</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dropdown-col">
-                                <a href="kids-teens/parents.html" class="feature-link">
-                                    <div>
-                                        <div class="feature-title">Parents and guardians</div>
-                                        <div class="feature-desc">Manage and monitor</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dropdown-col">
-                                <a href="help/centre.html" class="feature-link">
-                                    <div>
-                                        <div class="feature-title">Help Center</div>
-                                        <div class="feature-desc">Get support</div>
-                                    </div>
-                                </a>
-                            </div>
+                        <div class="kids-grid">
+                            <a href="kids-teens/account.html" class="kids-card" draggable="true">
+                                <div class="kids-icon">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <div class="kids-title">Kids & Teens account</div>
+                                <div class="kids-desc">For ages 6-17</div>
+                            </a>
+
+                            <a href="personal/Discover-NexusBank/Parents-and-guardians/index.html" class="kids-card" draggable="true">
+                                <div class="kids-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="kids-title">Parents and guardians</div>
+                                <div class="kids-desc">Manage and monitor</div>
+                            </a>
+
+                            <a href="help/Help-Centre/index.html" class="kids-card" draggable="true">
+                                <div class="kids-icon">
+                                    <i class="fas fa-circle-question"></i>
+                                </div>
+                                <div class="kids-title">Help Center</div>
+                                <div class="kids-desc">Get support</div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -456,16 +565,16 @@
                                 <div class="dropdown-section-header">
                                     <span>General</span>
                                 </div>
-                                <a href="company/about.html" class="dropdown-link">
+                                <a href="company/about.html" class="dropdown-link" draggable="true">
                                     <span>About Us</span>
                                 </a>
-                                <a href="company/blog.html" class="dropdown-link">
+                                <a href="company/blog.html" class="dropdown-link" draggable="true">
                                     <span>Blog</span>
                                 </a>
-                                <a href="company/news.html" class="dropdown-link">
+                                <a href="company/news.html" class="dropdown-link" draggable="true">
                                     <span>News & Media</span>
                                 </a>
-                                <a href="company/reviews.html" class="dropdown-link">
+                                <a href="company/reviews.html" class="dropdown-link" draggable="true">
                                     <span>NexusBank Reviews</span>
                                 </a>
                             </div>
@@ -475,26 +584,26 @@
                                 <div class="dropdown-section-header">
                                     <span>Careers</span>
                                 </div>
-                                <a href="careers/index.html" class="dropdown-link">
+                                <a href="careers/index.html" class="dropdown-link" draggable="true">
                                     <span>Careers</span>
                                 </a>
-                                <a href="careers/working.html" class="dropdown-link">
+                                <a href="careers/working.html" class="dropdown-link" draggable="true">
                                     <span>Working at NexusBank</span>
                                 </a>
-                                <a href="careers/culture.html" class="dropdown-link">
+                                <a href="careers/culture.html" class="dropdown-link" draggable="true">
                                     <span>Culture</span>
                                 </a>
-                                <a href="careers/diversity.html" class="dropdown-link">
+                                <a href="careers/diversity.html" class="dropdown-link" draggable="true">
                                     <span>Diversity & Inclusion</span>
                                 </a>
-                                <a href="careers/relocation.html" class="dropdown-link">
+                                <a href="careers/relocation.html" class="dropdown-link" draggable="true">
                                     <span>Relocation with NexusBank</span>
                                 </a>
                                 
                                 <div class="dropdown-section-header mt-3">
                                     <span>Talent Programmes</span>
                                 </div>
-                                <a href="careers/stem-champions.html" class="dropdown-link">
+                                <a href="careers/stem-champions.html" class="dropdown-link" draggable="true">
                                     <span>Talent Programmes STEM Champions</span>
                                 </a>
                             </div>
@@ -504,10 +613,10 @@
                                 <div class="dropdown-section-header">
                                     <span>Shareholder Relations</span>
                                 </div>
-                                <a href="investors/annual-report-2024.html" class="dropdown-link">
+                                <a href="investors/annual-report-2024.html" class="dropdown-link" draggable="true">
                                     <span>Annual Report 2024</span>
                                 </a>
-                                <a href="investors/reports.html" class="dropdown-link">
+                                <a href="investors/reports.html" class="dropdown-link" draggable="true">
                                     <span>Reports and results</span>
                                 </a>
                             </div>
@@ -517,11 +626,11 @@
 
                 <div class="nav-spacer"></div>
 
-                <a href="login.html?tab=register" class="nav-item btn-primary">
+                <a href="login.html?tab=register" class="nav-item btn-primary" id="registerBtn">
                     <i class="fas fa-user-plus"></i>
                     <span>Register</span>
                 </a>
-                <a href="login.html" class="nav-item btn-ghost">
+                <a href="login.html" class="nav-item btn-ghost" id="signinBtn">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>Sign In</span>
                 </a>
@@ -983,6 +1092,72 @@
     <script src="js/index.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Get all draggable menu items
+            const draggableItems = document.querySelectorAll('.dropdown-link[draggable="true"], .plan-link[draggable="true"], .kids-card[draggable="true"]');
+            const dropTargets = document.querySelectorAll('#registerBtn, #signinBtn');
+            
+            // Make all draggable items draggable
+            draggableItems.forEach(item => {
+                item.setAttribute('draggable', 'true');
+                
+                item.addEventListener('dragstart', function(e) {
+                    // Get the text from the span (the actual name, not the href path)
+                    const textSpan = this.querySelector('span:not(.plan-price)');
+                    let dragText = textSpan ? textSpan.innerText.trim() : this.innerText.trim();
+                    
+                    // Store the text to be dragged
+                    e.dataTransfer.setData('text/plain', dragText);
+                    e.dataTransfer.effectAllowed = 'copy';
+                    
+                    // Add visual feedback
+                    this.style.opacity = '0.5';
+                });
+                
+                item.addEventListener('dragend', function(e) {
+                    this.style.opacity = '';
+                });
+            });
+            
+            // Setup drop targets (Register and Sign In buttons)
+            dropTargets.forEach(target => {
+                target.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'copy';
+                    this.classList.add('drag-over');
+                });
+                
+                target.addEventListener('dragleave', function(e) {
+                    this.classList.remove('drag-over');
+                });
+                
+                target.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                    
+                    // Get the dragged text (the menu item name, not the path)
+                    const droppedText = e.dataTransfer.getData('text/plain');
+                    
+                    if (droppedText && droppedText.length > 0) {
+                        // Store original text if not already stored
+                        if (!this.hasAttribute('data-original-text')) {
+                            this.setAttribute('data-original-text', this.querySelector('span').innerText);
+                        }
+                        
+                        // Update the button text with the dragged menu item name
+                        const buttonSpan = this.querySelector('span');
+                        if (buttonSpan) {
+                            buttonSpan.innerText = droppedText;
+                        }
+                        
+                        // Add visual feedback animation
+                        this.classList.add('button-updated');
+                        setTimeout(() => {
+                            this.classList.remove('button-updated');
+                        }, 300);
+                    }
+                });
+            });
+            
             // Mobile menu toggle
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navRow = document.querySelector('.nav-row');

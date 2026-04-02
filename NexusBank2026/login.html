@@ -18,6 +18,15 @@
 </head>
 <body class="auth-page">
 
+
+    <!-- Page Transition Overlay -->
+  <div class="page-transition" id="pageTransition">
+    <div class="transition-loader">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">NexusBank</div>
+    </div>
+  </div>
+
   <!-- Animated background -->
   <div class="auth-background"></div>
   <div class="bg-grain"></div>
@@ -524,13 +533,50 @@
         users.push(newUser);
         localStorage.setItem('nexusbank_users', JSON.stringify(users));
 
-        // Show loading then redirect
-        if (loadingOverlay) loadingOverlay.classList.add('active');
-        setTimeout(() => {
+               // Show transition then redirect
+        const transition = document.getElementById('pageTransition');
+        if (transition) {
+          transition.classList.add('active');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 500);
+        } else {
           window.location.href = 'dashboard.html';
-        }, 1500);
+        }
       });
-
+      /* ── LOGIN SUBMIT WITH TRANSITION ───────── */
+      if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('loginEmail').value;
+          const password = document.getElementById('loginPassword').value;
+          
+          // Get users from localStorage
+          const users = JSON.parse(localStorage.getItem('nexusbank_users')) || [];
+          const user = users.find(u => u.email === email);
+          
+          // Check if credentials are valid
+          if (user && btoa(password) === user.password) {
+            // Store current user session
+            localStorage.setItem('nexusbank_current_user', JSON.stringify(user));
+            
+            // Show smooth transition
+            const transition = document.getElementById('pageTransition');
+            if (transition) {
+              transition.classList.add('active');
+              setTimeout(() => {
+                window.location.href = 'dashboard.html';
+              }, 500);
+            } else {
+              window.location.href = 'dashboard.html';
+            }
+          } else {
+            // Show error message
+            alert('Invalid email or password');
+          }
+        });
+      }
       /* ── SCROLL PROGRESS ────────────────────── */
       const progFill = document.getElementById('regProgressFill');
       const floatTop = document.getElementById('floatTop');
@@ -547,6 +593,8 @@
     }); // DOMContentLoaded
   })();
   </script>
+
+  
 <script>
     // Check URL parameter to open Register tab
     (function() {

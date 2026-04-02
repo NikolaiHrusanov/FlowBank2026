@@ -213,9 +213,59 @@
           <!-- ── STEP 1: RECIPIENT ────────────── -->
           <div class="transfer-step active" id="step1">
             <div class="step-header">
-            
+              <h2>Choose Recipient</h2>
+              <p>Select a saved contact or enter new recipient details</p>
+            </div>
 
-          
+            <div class="recipients-grid">
+              <div class="recipient-card selected" data-name="Jane Smith" data-detail="•••• 1234">
+                <div class="recipient-avatar"><i class="fas fa-user"></i></div>
+                <div class="recipient-info">
+                  <div class="recipient-name">Jane Smith</div>
+                  <div class="recipient-detail">•••• 1234</div>
+                </div>
+              </div>
+              <div class="recipient-card" data-name="Michael Brown" data-detail="•••• 5678">
+                <div class="recipient-avatar"><i class="fas fa-user"></i></div>
+                <div class="recipient-info">
+                  <div class="recipient-name">Michael Brown</div>
+                  <div class="recipient-detail">•••• 5678</div>
+                </div>
+              </div>
+              <div class="recipient-card" data-name="Sarah Wilson" data-detail="•••• 9012">
+                <div class="recipient-avatar"><i class="fas fa-user"></i></div>
+                <div class="recipient-info">
+                  <div class="recipient-name">Sarah Wilson</div>
+                  <div class="recipient-detail">•••• 9012</div>
+                </div>
+              </div>
+              <div class="recipient-card add-new-card" id="addRecipientBtn">
+                <div class="recipient-avatar"><i class="fas fa-plus"></i></div>
+                <div class="recipient-info">
+                  <div class="recipient-name">Add New</div>
+                  <div class="recipient-detail">New recipient</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider">or enter manually</div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipientName">Full Name</label>
+              <input type="text" class="form-control" id="recipientName" placeholder="Enter full name" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recipientDetails">Account / IBAN / Email</label>
+              <input type="text" class="form-control" id="recipientDetails" placeholder="Account number, IBAN, or email" />
+            </div>
+
+            <div class="step-actions">
+              <button class="btn-primary" id="nextStep1">
+                Continue <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
 
           <!-- ── STEP 2: AMOUNT ───────────────── -->
           <div class="transfer-step" id="step2">
@@ -402,13 +452,6 @@
 
         </div><!-- /transfer-form-container -->
 
-        <!-- ══════════════════════════════════
-             RECENT TRANSFERS
-        ══════════════════════════════════ -->
-        
-
-       
-
       </div><!-- /page-body -->
     </main>
   </div><!-- /app-container -->
@@ -470,28 +513,18 @@
     const sidebar        = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    mobileMenuBtn.addEventListener('click', () => {
-      sidebar.classList.add('active');
-      sidebarOverlay.classList.add('active');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-      sidebar.classList.remove('active');
-      sidebarOverlay.classList.remove('active');
-    });
-
-    /* ── THEME TOGGLE ─────────────────────────── */
-    const themeToggle = document.getElementById('sidebarThemeToggle');
-    function applyTheme(dark) {
-      document.documentElement.classList.toggle('dark-theme', dark);
-      document.body.classList.toggle('dark-theme', dark);
-      const icon = themeToggle.querySelector('i');
-      icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      });
     }
-    themeToggle.addEventListener('click', () => {
-      applyTheme(!document.body.classList.contains('dark-theme'));
-    });
-    applyTheme(localStorage.getItem('theme') !== 'light');
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
 
     /* ── STEPPER STATE ────────────────────────── */
     let currentStep = 1;
@@ -533,20 +566,29 @@
       });
     });
 
-    document.querySelector('.add-new-card').addEventListener('click', () => {
-      document.getElementById('addRecipientModal').classList.add('active');
-    });
+    const addRecipientBtn = document.getElementById('addRecipientBtn');
+    if (addRecipientBtn) {
+      addRecipientBtn.addEventListener('click', () => {
+        document.getElementById('addRecipientModal').classList.add('active');
+      });
+    }
 
     /* ── STEP 1 NEXT ──────────────────────────── */
-    document.getElementById('nextStep1').addEventListener('click', () => {
-      const manual = document.getElementById('recipientName').value.trim();
-      if (!document.querySelector('.recipient-card.selected:not(.add-new-card)') && !manual) {
-        alert('Please select or enter a recipient.');
-        return;
-      }
-      if (manual) selectedRecipient = { name: manual, detail: document.getElementById('recipientDetails').value.trim() };
-      goToStep(2);
-    });
+    const nextStep1 = document.getElementById('nextStep1');
+    if (nextStep1) {
+      nextStep1.addEventListener('click', () => {
+        const manual = document.getElementById('recipientName').value.trim();
+        if (!document.querySelector('.recipient-card.selected:not(.add-new-card)') && !manual) {
+          alert('Please select or enter a recipient.');
+          return;
+        }
+        if (manual) {
+          const manualDetail = document.getElementById('recipientDetails').value.trim();
+          selectedRecipient = { name: manual, detail: manualDetail || 'Manual entry' };
+        }
+        goToStep(2);
+      });
+    }
 
     /* ── KEYPAD ───────────────────────────────── */
     const amountDisplay = document.getElementById('amountDisplay');
@@ -578,107 +620,163 @@
     });
 
     /* ── SCHEDULE TOGGLE ──────────────────────── */
-    document.getElementById('scheduleTransfer').addEventListener('change', function () {
-      document.getElementById('scheduleOptions').style.display = this.checked ? 'block' : 'none';
-    });
+    const scheduleTransfer = document.getElementById('scheduleTransfer');
+    if (scheduleTransfer) {
+      scheduleTransfer.addEventListener('change', function () {
+        const scheduleOptions = document.getElementById('scheduleOptions');
+        if (scheduleOptions) {
+          scheduleOptions.style.display = this.checked ? 'block' : 'none';
+        }
+      });
+    }
 
     /* ── STEP 2 NAV ───────────────────────────── */
-    document.getElementById('prevStep2').addEventListener('click', () => goToStep(1));
-    document.getElementById('nextStep2').addEventListener('click', () => {
-      const amt = parseFloat(transferAmount);
-      if (!amt || amt <= 0) { alert('Please enter a valid amount.'); return; }
+    const prevStep2 = document.getElementById('prevStep2');
+    const nextStep2 = document.getElementById('nextStep2');
+    
+    if (prevStep2) {
+      prevStep2.addEventListener('click', () => goToStep(1));
+    }
+    if (nextStep2) {
+      nextStep2.addEventListener('click', () => {
+        const amt = parseFloat(transferAmount);
+        if (!amt || amt <= 0) { alert('Please enter a valid amount.'); return; }
 
-      const formatted = '$' + amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('reviewRecipient').innerHTML =
-        `<strong>${selectedRecipient.name}</strong><br><small style="color:var(--text-3);">${selectedRecipient.detail}</small>`;
+        const formatted = '$' + amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const reviewRecipient = document.getElementById('reviewRecipient');
+        if (reviewRecipient) {
+          reviewRecipient.innerHTML = `<strong>${selectedRecipient.name}</strong><br><small style="color:var(--text-3);">${selectedRecipient.detail}</small>`;
+        }
 
-      const acct = document.getElementById('fromAccount');
-      document.getElementById('reviewAccount').textContent = acct.options[acct.selectedIndex].text.split('—')[0].trim();
-      document.getElementById('reviewAmount').textContent = formatted;
-      document.getElementById('reviewTotal').textContent  = formatted;
+        const fromAccount = document.getElementById('fromAccount');
+        const reviewAccount = document.getElementById('reviewAccount');
+        if (reviewAccount && fromAccount) {
+          reviewAccount.textContent = fromAccount.options[fromAccount.selectedIndex].text.split('—')[0].trim();
+        }
+        
+        const reviewAmount = document.getElementById('reviewAmount');
+        const reviewTotal = document.getElementById('reviewTotal');
+        if (reviewAmount) reviewAmount.textContent = formatted;
+        if (reviewTotal) reviewTotal.textContent = formatted;
 
-      const ref = document.getElementById('transferReference').value.trim();
-      document.getElementById('reviewReference').textContent = ref || '—';
+        const transferReference = document.getElementById('transferReference');
+        const reviewReference = document.getElementById('reviewReference');
+        if (reviewReference && transferReference) {
+          const ref = transferReference.value.trim();
+          reviewReference.textContent = ref || '—';
+        }
 
-      const sched = document.getElementById('scheduleTransfer').checked;
-      const dateVal = document.getElementById('scheduleDate').value;
-      document.getElementById('reviewDate').textContent = sched && dateVal
-        ? new Date(dateVal + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + ' · Scheduled'
-        : 'Today · Instant';
+        const scheduleCheck = document.getElementById('scheduleTransfer');
+        const scheduleDate = document.getElementById('scheduleDate');
+        const reviewDate = document.getElementById('reviewDate');
+        if (reviewDate && scheduleCheck && scheduleDate) {
+          const sched = scheduleCheck.checked;
+          const dateVal = scheduleDate.value;
+          reviewDate.textContent = sched && dateVal
+            ? new Date(dateVal + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + ' · Scheduled'
+            : 'Today · Instant';
+        }
 
-      goToStep(3);
-    });
+        goToStep(3);
+      });
+    }
 
     /* ── STEP 3 NAV ───────────────────────────── */
-    document.getElementById('prevStep3').addEventListener('click', () => goToStep(2));
-    document.getElementById('nextStep3').addEventListener('click', () => {
-      const amt    = parseFloat(transferAmount);
-      const fmtAmt = '$' + amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const txId   = 'TX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    const prevStep3 = document.getElementById('prevStep3');
+    const nextStep3 = document.getElementById('nextStep3');
+    
+    if (prevStep3) {
+      prevStep3.addEventListener('click', () => goToStep(2));
+    }
+    if (nextStep3) {
+      nextStep3.addEventListener('click', () => {
+        const amt = parseFloat(transferAmount);
+        const fmtAmt = '$' + amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const txId = 'TX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
 
-      document.getElementById('confirmationAmount').textContent   = fmtAmt;
-      document.getElementById('confirmationRecipient').textContent = selectedRecipient.name;
-      document.getElementById('txId').textContent = txId;
+        const confirmationAmount = document.getElementById('confirmationAmount');
+        const confirmationRecipient = document.getElementById('confirmationRecipient');
+        const txIdEl = document.getElementById('txId');
+        
+        if (confirmationAmount) confirmationAmount.textContent = fmtAmt;
+        if (confirmationRecipient) confirmationRecipient.textContent = selectedRecipient.name;
+        if (txIdEl) txIdEl.textContent = txId;
 
-      goToStep(4);
-    });
+        goToStep(4);
+      });
+    }
 
     /* ── STEP 4 ACTIONS ───────────────────────── */
-    document.getElementById('newTransferBtn').addEventListener('click', () => {
-      transferAmount = '0';
-      amountDisplay.textContent = '0.00';
-      document.getElementById('transferReference').value = '';
-      document.getElementById('scheduleTransfer').checked = false;
-      document.getElementById('scheduleOptions').style.display = 'none';
-      document.getElementById('recipientDetails').value = '';
-      document.getElementById('recipientName').value = '';
-      document.querySelectorAll('.recipient-card').forEach(c => c.classList.remove('selected'));
-      document.querySelector('.recipient-card:not(.add-new-card)').classList.add('selected');
-      selectedRecipient = { name: 'Jane Smith', detail: '•••• 1234' };
-      document.querySelectorAll('.quick-amount').forEach(q => q.classList.remove('active'));
-      goToStep(1);
-    });
+    const newTransferBtn = document.getElementById('newTransferBtn');
+    if (newTransferBtn) {
+      newTransferBtn.addEventListener('click', () => {
+        transferAmount = '0';
+        if (amountDisplay) amountDisplay.textContent = '0.00';
+        const transferReference = document.getElementById('transferReference');
+        if (transferReference) transferReference.value = '';
+        const scheduleTransfer = document.getElementById('scheduleTransfer');
+        if (scheduleTransfer) scheduleTransfer.checked = false;
+        const scheduleOptions = document.getElementById('scheduleOptions');
+        if (scheduleOptions) scheduleOptions.style.display = 'none';
+        const recipientDetails = document.getElementById('recipientDetails');
+        if (recipientDetails) recipientDetails.value = '';
+        const recipientName = document.getElementById('recipientName');
+        if (recipientName) recipientName.value = '';
+        document.querySelectorAll('.recipient-card').forEach(c => c.classList.remove('selected'));
+        const defaultCard = document.querySelector('.recipient-card:not(.add-new-card)');
+        if (defaultCard) defaultCard.classList.add('selected');
+        selectedRecipient = { name: 'Jane Smith', detail: '•••• 1234' };
+        document.querySelectorAll('.quick-amount').forEach(q => q.classList.remove('active'));
+        goToStep(1);
+      });
+    }
 
-    document.getElementById('viewReceiptBtn').addEventListener('click', () => {
-      alert('Receipt download coming soon!');
-    });
+    const viewReceiptBtn = document.getElementById('viewReceiptBtn');
+    if (viewReceiptBtn) {
+      viewReceiptBtn.addEventListener('click', () => {
+        alert('Receipt download coming soon!');
+      });
+    }
 
     /* ── HEADER BUTTONS ───────────────────────── */
-    document.getElementById('viewScheduleBtn').addEventListener('click', () => {
-      alert('Scheduled transfers view coming soon!');
-    });
-    document.getElementById('viewHistoryBtn').addEventListener('click', () => {
-      window.location.href = 'transactions.html';
-    });
+    const viewScheduleBtn = document.getElementById('viewScheduleBtn');
+    const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+    
+    if (viewScheduleBtn) {
+      viewScheduleBtn.addEventListener('click', () => {
+        alert('Scheduled transfers view coming soon!');
+      });
+    }
+    if (viewHistoryBtn) {
+      viewHistoryBtn.addEventListener('click', () => {
+        window.location.href = 'transactions.html';
+      });
+    }
 
     /* ── ADD RECIPIENT MODAL ──────────────────── */
     const addRecipientModal  = document.getElementById('addRecipientModal');
     const closeRecipientModal = document.getElementById('closeRecipientModal');
 
-    document.getElementById('addRecipientBtn').addEventListener('click', () => {
-      addRecipientModal.classList.add('active');
-    });
-    closeRecipientModal.addEventListener('click', () => addRecipientModal.classList.remove('active'));
-    addRecipientModal.addEventListener('click', e => {
-      if (e.target === addRecipientModal) addRecipientModal.classList.remove('active');
-    });
+    if (closeRecipientModal) {
+      closeRecipientModal.addEventListener('click', () => {
+        if (addRecipientModal) addRecipientModal.classList.remove('active');
+      });
+    }
+    if (addRecipientModal) {
+      addRecipientModal.addEventListener('click', e => {
+        if (e.target === addRecipientModal) addRecipientModal.classList.remove('active');
+      });
+    }
 
-    document.getElementById('recipientForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('recipientFullName').value.trim();
-      alert(`✅ "${name}" added as a recipient!`);
-      addRecipientModal.classList.remove('active');
-      document.getElementById('recipientForm').reset();
-    });
-
-    /* ── SESSION: load user info ──────────────── */
-    const session = JSON.parse(localStorage.getItem('nexusbank_current_user'))
-                 || JSON.parse(sessionStorage.getItem('nexusbank_current_user'));
-    if (session) {
-      const initials = session.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-      document.getElementById('userName').textContent  = session.name;
-      document.getElementById('userEmail').textContent = session.email;
-      document.getElementById('userAvatar').textContent = initials;
+    const recipientForm = document.getElementById('recipientForm');
+    if (recipientForm) {
+      recipientForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('recipientFullName').value.trim();
+        alert(`✅ "${name}" added as a recipient!`);
+        if (addRecipientModal) addRecipientModal.classList.remove('active');
+        recipientForm.reset();
+      });
     }
 
   });
